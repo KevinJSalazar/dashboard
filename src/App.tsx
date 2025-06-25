@@ -22,7 +22,7 @@ function App() {
 
       {/* Selector */}
       <Grid size={{ xs: 12, md: 3 }}>Elemento: Selector
-        <SelectorUI description="Mamawebo"/>
+        <SelectorUI/>
       </Grid>
 
       {/* Indicadores */}
