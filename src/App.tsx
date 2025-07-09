@@ -8,6 +8,15 @@ import AlertUI from './components/AlertUI';
 import SelectorUI from './components/SelectorUI';
 import IndicatorUI from './components/IndicatorUI';
 import DataFetcher from './functions/DataFetcher';
+import TableUI from './components/TableUI';
+import ChartUI from './components/ChartUI';
+
+const cities = [
+  {value: "guayaquil", label: "Guayaquil",  lat: -2.1894, lon: -79.8891 },
+  quito: { lat: -0.1807, lon: -78.4678 },
+  manta: { lat: -0.9677, lon: -80.7089 },
+  cuenca: { lat: -2.9006, lon: -79.0045 },
+];
 
 function App() {
   const dataFetcherOutput = DataFetcher();
@@ -71,10 +80,14 @@ function App() {
       </Grid>
 
       {/* Gráfico */}
-      <Grid size={{ xs: 12, md: 6 }}>Elemento: Gráfico</Grid>
+      <Grid size={{ xs: 12, md: 6 }}>Elemento: Gráfico
+         <ChartUI />
+      </Grid>
 
       {/* Tabla */}
-      <Grid size={{ xs: 12, md: 6 }}>Elemento: Tabla</Grid>
+      <Grid size={{ xs: 12, md: 6 }}>Elemento: Tabla
+        <TableUI />
+      </Grid>
 
       {/* Información adicional */}
       <Grid size={{ xs: 12, md: 12 }}>Elemento: Información adicional</Grid>

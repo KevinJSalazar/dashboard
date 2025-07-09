@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import type { OpenMeteoResponse } from "../types/DashboardTypes";
 
-const DataFetcher = () => {
+export interface DataFetcherResult {
+  data: OpenMeteoResponse | null;
+  loading: boolean;
+  error: string | null;
+} 
+
+const DataFetcher = (lat: number, lon: number) => {
   const [data, setData] = useState<OpenMeteoResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=America%2FChicago";
+    
   useEffect(() => {
-    const url =
-      "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=America%2FChicago";
-      
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -26,7 +33,7 @@ const DataFetcher = () => {
     };
 
     fetchData();
-  }, []);
+  }, [lat, lon]);
 
   return { data, loading, error };
 };
