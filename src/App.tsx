@@ -8,6 +8,8 @@ import AlertUI from './components/AlertUI';
 import SelectorUI from './components/SelectorUI';
 import IndicatorUI from './components/IndicatorUI';
 import DataFetcher from './functions/DataFetcher';
+import TableUI from './components/TableUI';
+import ChartUI from './components/ChartUI';
 
 function App() {
   const dataFetcherOutput = DataFetcher();
@@ -57,7 +59,7 @@ function App() {
             <Grid size={{ xs: 12, md: 3 }}>
               <IndicatorUI
                 title='Velocidad del viento'
-                description={`${dataFetcherOutput.data.current.wind_speed_10m} km/h`}
+                description={`${dataFetcherOutput.data.current.relative_humidity_2m} km/h`}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 3 }}>
@@ -71,10 +73,26 @@ function App() {
       </Grid>
 
       {/* Gráfico */}
-      <Grid size={{ xs: 12, md: 6 }}>Elemento: Gráfico</Grid>
+      <Grid size={{ xs: 12, md: 6 }}>Elemento: Gráfico
+        {dataFetcherOutput.data && (
+          <ChartUI
+            temperature={dataFetcherOutput.data.hourly.temperature_2m.slice(0, 24)}
+            relativeHumidity={dataFetcherOutput.data.hourly.relative_humidity_2m.slice(0, 24)}
+            labels={dataFetcherOutput.data.hourly.time.slice(0, 24)}
+          />
+        )}
+      </Grid>
 
       {/* Tabla */}
-      <Grid size={{ xs: 12, md: 6 }}>Elemento: Tabla</Grid>
+      <Grid size={{ xs: 12, md: 6 }}>Elemento: Tabla
+        {dataFetcherOutput.data && (
+          <TableUI 
+            temperature={dataFetcherOutput.data.hourly.temperature_2m.slice(0, 24)}
+            relativeHumidity={dataFetcherOutput.data.hourly.relative_humidity_2m.slice(0, 24)}
+            labels={dataFetcherOutput.data.hourly.time.slice(0, 24)}
+          />
+        )}
+      </Grid>
 
       {/* Información adicional */}
       <Grid size={{ xs: 12, md: 12 }}>Elemento: Información adicional</Grid>

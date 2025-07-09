@@ -15,11 +15,13 @@ export interface OpenMeteoResponse {
 export interface Hourly {
   time: string[];
   temperature_2m: number[];
+  relative_humidity_2m: number[];
 }
 
 export interface Hourlyunits {
   time: string;
   temperature_2m: string;
+  relative_humidity_2m: string;
 }
 
 export interface Current {
@@ -27,8 +29,8 @@ export interface Current {
   interval: number;
   temperature_2m: number;
   relative_humidity_2m: number;
-  apparent_temperature: number;
   wind_speed_10m: number;
+  apparent_temperature: number;
 }
 
 export interface Currentunits {
@@ -36,6 +38,6 @@ export interface Currentunits {
   interval: string;
   temperature_2m: string;
   relative_humidity_2m: string;
-  apparent_temperature: string;
   wind_speed_10m: string;
+  apparent_temperature: string;
 }
