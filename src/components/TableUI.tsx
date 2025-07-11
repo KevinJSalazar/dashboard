@@ -34,14 +34,34 @@ interface RowData {
    value2: number;
 }
 
-export default function TableUI() {
+// Definimos la interfaz de props para TableUI
+interface TableUIProps {
+    selectedCity: string;
+}
+
+// Mapeo de ciudades a coordenadas
+const cityCoordinates: { [key: string]: { latitude: number; longitude: number } } = {
+    guayaquil: { latitude: -2.1894, longitude: -79.8891 },
+    quito: { latitude: -0.1807, longitude: -78.4678 },
+    manta: { latitude: -0.9677, longitude: -80.7089 },
+    cuenca: { latitude: -2.9006, longitude: -79.0045 },
+};
+
+export default function TableUI({ selectedCity }: TableUIProps) { // Recibir selectedCity como prop
    const [rows, setRows] = useState<RowData[]>([]);
 
    useEffect(() => {
       async function fetchData() {
          try {
+            const coords = cityCoordinates[selectedCity];
+            if (!coords) {
+                console.error('Coordenadas no encontradas para la ciudad:', selectedCity);
+                setRows([]); // Limpiar la tabla si no hay coordenadas
+                return;
+            }
+
             const res = await fetch(
-               'https://api.open-meteo.com/v1/forecast?latitude=-1.25&longitude=-78.25&hourly=temperature_2m,wind_speed_10m&timezone=America%2FChicago'
+               `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&hourly=temperature_2m,wind_speed_10m&timezone=America%2FChicago`
             );
             const data = await res.json();
 
@@ -52,12 +72,12 @@ export default function TableUI() {
             const combined = combineArrays(labels, values1, values2);
             setRows(combined);
          } catch (error) {
-            console.error('Error al obtener datos del clima:', error);
+            console.error('Error al obtener datos del clima para la tabla:', error);
          }
       }
 
       fetchData();
-   }, []);
+   }, [selectedCity]); // Ejecutar fetchData cada vez que selectedCity cambie
 
    return (
       <Box sx={{ height: 350, width: '100%' }}>

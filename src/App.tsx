@@ -1,6 +1,4 @@
-//import { useState } from 'react'
-//import reactLogo from './assets/react.svg'
-//import viteLogo from '/vite.svg'
+import { useState } from 'react'
 import './App.css'
 import { Grid } from '@mui/material';
 import HeaderUI from './components/HeaderUI';
@@ -8,20 +6,14 @@ import AlertUI from './components/AlertUI';
 import SelectorUI from './components/SelectorUI';
 import IndicatorUI from './components/IndicatorUI';
 import DataFetcher from './functions/DataFetcher';
-import TableUI from './components/TableUI';
-import ChartUI from './components/ChartUI';
+import TableUI from './components/TableUI'; // Importar TableUI
+import ChartUI from './components/ChartUI'; // Importar ChartUI
 
-/*
-const cities = [
-  {value: "guayaquil", label: "Guayaquil",  lat: -2.1894, lon: -79.8891 },
-  quito: { lat: -0.1807, lon: -78.4678 },
-  manta: { lat: -0.9677, lon: -80.7089 },
-  cuenca: { lat: -2.9006, lon: -79.0045 },
-];
-*/
 
 function App() {
-  const dataFetcherOutput = DataFetcher();
+  const [selectedCity, setSelectedCity] = useState('guayaquil'); // Estado para la ciudad seleccionada
+
+  const dataFetcherOutput = DataFetcher(selectedCity); // Pasar selectedCity a DataFetcher
 
   return (
     <Grid container spacing={5} justifyContent="center" alignItems="center">
@@ -36,7 +28,7 @@ function App() {
 
       {/* Selector */}
       <Grid size={{ xs: 12, md: 3 }}>Elemento: Selector
-        <SelectorUI/>
+        <SelectorUI onSelectCity={setSelectedCity} selectedCity={selectedCity} /> {/* Pasar setSelectedCity y selectedCity como props */}
       </Grid>
 
       {/* Indicadores */}
@@ -83,12 +75,12 @@ function App() {
 
       {/* Gráfico */}
       <Grid size={{ xs: 12, md: 6 }}>Elemento: Gráfico
-         <ChartUI />
+         <ChartUI selectedCity={selectedCity} /> {/* Pasar selectedCity al ChartUI */}
       </Grid>
 
       {/* Tabla */}
       <Grid size={{ xs: 12, md: 6 }}>Elemento: Tabla
-        <TableUI />
+        <TableUI selectedCity={selectedCity} /> {/* Pasar selectedCity al TableUI */}
       </Grid>
 
       {/* Información adicional */}
