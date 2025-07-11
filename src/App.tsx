@@ -11,12 +11,14 @@ import DataFetcher from './functions/DataFetcher';
 import TableUI from './components/TableUI';
 import ChartUI from './components/ChartUI';
 
+/*
 const cities = [
   {value: "guayaquil", label: "Guayaquil",  lat: -2.1894, lon: -79.8891 },
   quito: { lat: -0.1807, lon: -78.4678 },
   manta: { lat: -0.9677, lon: -80.7089 },
   cuenca: { lat: -2.9006, lon: -79.0045 },
 ];
+*/
 
 function App() {
   const dataFetcherOutput = DataFetcher();
