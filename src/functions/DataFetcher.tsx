@@ -12,7 +12,9 @@ const cityCoordinates: CityCoordinates = {
   cuenca: { latitude: -2.9006, longitude: -79.0045 },
 };
 
-const DataFetcher = (selectedCity: string) => { // Accept selectedCity as a prop
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos en milisegundos
+
+const DataFetcher = (selectedCity: string) => {
   const [data, setData] = useState<OpenMeteoResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,11 +28,24 @@ const DataFetcher = (selectedCity: string) => { // Accept selectedCity as a prop
       return;
     }
 
+    const cacheKey = `weather_${selectedCity}`;
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached) {
+      const { timestamp, data: cachedData } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_DURATION) {
+        setData(cachedData);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+    }
+
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&hourly=temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=America%2FChicago`;
-      
+
     const fetchData = async () => {
-      setLoading(true); // Set loading to true on each new fetch
-      setError(null);   // Clear previous errors
+      setLoading(true);
+      setError(null);
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -38,15 +53,24 @@ const DataFetcher = (selectedCity: string) => { // Accept selectedCity as a prop
         }
         const result: OpenMeteoResponse = await response.json();
         setData(result);
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify({ timestamp: Date.now(), data: result })
+        );
       } catch (err: any) {
         setError(err.message);
+        // Si hay datos cacheados, usarlos como fallback
+        if (cached) {
+          const { data: cachedData } = JSON.parse(cached);
+          setData(cachedData);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [selectedCity]); // Re-run effect when selectedCity changes
+  }, [selectedCity]);
 
   return { data, loading, error };
 };
