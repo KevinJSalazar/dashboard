@@ -72,6 +72,37 @@ const DataFetcher = (selectedCity: string) => {
     fetchData();
   }, [selectedCity]);
 
+  // Prefetch de todas las ciudades al cargar la app
+  useEffect(() => {
+    Object.entries(cityCoordinates).forEach(async ([city, coords]) => {
+      const cacheKey = `weather_${city}`;
+      const cached = localStorage.getItem(cacheKey);
+
+      if (cached) {
+        const { timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          // Cache vigente, no hace falta pedirlo
+          return;
+        }
+      }
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&hourly=temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=America%2FChicago`;
+
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const result: OpenMeteoResponse = await response.json();
+          localStorage.setItem(
+            cacheKey,
+            JSON.stringify({ timestamp: Date.now(), data: result })
+          );
+        }
+      } catch {
+        // Silenciar errores de prefetch
+      }
+    });
+  }, []);
+
   return { data, loading, error };
 };
 
