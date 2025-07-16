@@ -1,6 +1,4 @@
-//import { useState } from 'react'
-//import reactLogo from './assets/react.svg'
-//import viteLogo from '/vite.svg'
+import { useState } from 'react'
 import './App.css'
 import { Grid } from '@mui/material';
 import HeaderUI from './components/HeaderUI';
@@ -12,7 +10,9 @@ import TableUI from './components/TableUI';
 import ChartUI from './components/ChartUI';
 
 function App() {
-  const dataFetcherOutput = DataFetcher();
+  const [selectedCity, setSelectedCity] = useState('guayaquil'); // Estado para la ciudad seleccionada
+
+  const dataFetcherOutput = DataFetcher(selectedCity); // Pasar selectedCity a DataFetcher
 
   return (
     <Grid container spacing={5} justifyContent="center" alignItems="center">
@@ -27,7 +27,7 @@ function App() {
 
       {/* Selector */}
       <Grid size={{ xs: 12, md: 3 }}>Elemento: Selector
-        <SelectorUI/>
+        <SelectorUI onSelectCity={setSelectedCity} selectedCity={selectedCity} /> {/* Pasar setSelectedCity y selectedCity como props */}
       </Grid>
 
       {/* Indicadores */}
