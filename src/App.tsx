@@ -8,6 +8,7 @@ import IndicatorUI from './components/IndicatorUI';
 import DataFetcher from './functions/DataFetcher';
 import TableUI from './components/TableUI'; // Importar TableUI
 import ChartUI from './components/ChartUI'; // Importar ChartUI
+import CohereBubble from './components/CohereBubble'; // Importa el componente CohereBubble
 
 
 function App() {
@@ -86,6 +87,10 @@ function App() {
       {/* Información adicional */}
       <Grid size={{ xs: 12, md: 12 }}>Elemento: Información adicional</Grid>
 
+      {/* Botón flotante para abrir el chatbot de Cohere */}
+      <CohereBubble 
+      dataFetcher = {dataFetcherOutput}
+      />
     </Grid>
   );
 }
