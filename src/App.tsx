@@ -9,7 +9,7 @@ import DataFetcher from './functions/DataFetcher';
 import TableUI from './components/TableUI'; // Importar TableUI
 import ChartUI from './components/ChartUI'; // Importar ChartUI
 import CohereBubble from './components/CohereBubble'; // Importa el componente CohereBubble
-
+import RecomendationUI from './components/RecomendationUI'; // Importar RecomendationUI
 
 function App() {
   const [selectedCity, setSelectedCity] = useState('guayaquil'); // Estado para la ciudad seleccionada
@@ -28,7 +28,7 @@ function App() {
       </Grid>
 
       {/* Selector */}
-      <Grid size={{ xs: 12, md: 3 }}>Elemento: Selector
+      <Grid size={{ xs: 12, md: 3 }}>
         <SelectorUI onSelectCity={setSelectedCity} selectedCity={selectedCity} /> {/* Pasar setSelectedCity y selectedCity como props */}
       </Grid>
 
@@ -75,17 +75,28 @@ function App() {
       </Grid>
 
       {/* Gráfico */}
-      <Grid size={{ xs: 12, md: 6 }}>Elemento: Gráfico
+      <Grid size={{ xs: 12, md: 12 }}>
          <ChartUI selectedCity={selectedCity} /> {/* Pasar selectedCity al ChartUI */}
       </Grid>
 
       {/* Tabla */}
-      <Grid size={{ xs: 12, md: 6 }}>Elemento: Tabla
+      <Grid size={{ xs: 12, md: 12 }}>
         <TableUI selectedCity={selectedCity} /> {/* Pasar selectedCity al TableUI */}
       </Grid>
 
       {/* Información adicional */}
-      <Grid size={{ xs: 12, md: 12 }}>Elemento: Información adicional</Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        {dataFetcherOutput.data && (
+          <RecomendationUI
+            temperature_2m={dataFetcherOutput.data.current.temperature_2m}
+            relative_humidity_2m={dataFetcherOutput.data.current.relative_humidity_2m}
+            wind_speed_10m={dataFetcherOutput.data.current.wind_speed_10m}
+            apparent_temperature={dataFetcherOutput.data.current.apparent_temperature}
+          />
+        )}
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 6 }}></Grid>
 
       {/* Botón flotante para abrir el chatbot de Cohere */}
       <CohereBubble 
