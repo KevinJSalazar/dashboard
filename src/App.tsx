@@ -80,12 +80,12 @@ function App() {
       </Grid>
 
       {/* Tabla */}
-      <Grid size={{ xs: 12, md: 12 }}>
+      <Grid size={{ xs: 12, md: 8 }}>
         <TableUI selectedCity={selectedCity} /> {/* Pasar selectedCity al TableUI */}
       </Grid>
 
       {/* Información adicional */}
-      <Grid size={{ xs: 12, md: 6 }}>
+      <Grid size={{ xs: 12, md: 4 }}>
         {dataFetcherOutput.data && (
           <RecomendationUI
             temperature_2m={dataFetcherOutput.data.current.temperature_2m}

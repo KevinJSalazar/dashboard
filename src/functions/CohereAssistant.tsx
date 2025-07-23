@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { CohereClientV2 } from "cohere-ai";
 
 const cohere = new CohereClientV2({
-  token: import.meta.env.VITE_COHERE_API_KEY,
+  token: "i4dgNTi5po1KAtTqcDWZXWf94EymKcbbZDFQwYxw",
 });
 
 interface WeatherParams {
